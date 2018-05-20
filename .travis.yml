@@ -1,0 +1,33 @@
+sudo: false
+language: generic
+cache:
+  timeout: 360
+  directories:
+  - "$HOME/.stack/"
+  - "$HOME/.local/bin/"
+  - ".stack-work/"
+install:
+- mkdir -p ~/.local/bin
+- export PATH=$HOME/.local/bin:$PATH
+- travis_retry curl -L https://www.stackage.org/stack/linux-x86_64 | tar xz --wildcards --strip-components=1 -C ~/.local/bin '*/stack'
+jobs:
+  include:
+    - stage: install dockwright
+      # if: branch = master
+      script: stack --no-terminal --stack-yaml ./stack.yaml install dockwright
+    - stage: exec dockwright
+      # if: branch = master
+      script: git clone -b ${TRAVIS_BRANCH} "https://${GH_TOKEN}@github.com/${TRAVIS_REPO_SLUG}.git" temp
+      after_success:
+        - cd temp
+        - stack exec -- dockwright --version
+        - stack exec -- dockwright .dockwright.yaml
+        - git config user.name "${GIT_NAME}"
+        - git config user.email "${GIT_EMAIL}"
+        - git status
+        - git add -A
+        - git diff --quiet && git diff --staged --quiet || git commit -am "[skip ci] Update Dockerfile"
+        - git tag $(stack exec -- dockwright --echo=ELCHEMY_VERSION)
+        - git tag
+        # - git push origin master
+        # - git push origin --tags

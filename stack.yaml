@@ -1,0 +1,7 @@
+resolver: lts-11.9
+packages:
+- .
+extra-deps:
+- extensible-0.4.9
+- github: matsubara0507/dockwright
+  commit: c465c90

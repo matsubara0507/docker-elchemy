@@ -27,7 +27,7 @@ jobs:
         - git status
         - git add -A
         - git diff --quiet && git diff --staged --quiet || git commit -am "[skip ci] Update Dockerfile"
-        - stack exec -- dockwright --echo=ELCHEMY_VERSION | git tag
+        - git tag $(stack exec -- dockwright --echo=ELCHEMY_VERSION)
         - git tag
         # - git push origin master
         # - git push origin --tags

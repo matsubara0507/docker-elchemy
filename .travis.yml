@@ -17,7 +17,7 @@ jobs:
       script: stack --no-terminal --stack-yaml ./stack.yaml install dockwright
     - stage: exec dockwright
       # if: branch = master
-      script: git clone -b master "https://${GH_TOKEN}@github.com/${TRAVIS_REPO_SLUG}.git" temp
+      script: git clone -b ${TRAVIS_BRANCH} "https://${GH_TOKEN}@github.com/${TRAVIS_REPO_SLUG}.git" temp
       after_success:
         - cd temp
         - stack exec -- dockwright --version

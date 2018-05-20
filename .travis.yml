@@ -13,10 +13,10 @@ install:
 jobs:
   include:
     - stage: install dockwright
-      # if: branch = master
+      if: branch = master
       script: stack --no-terminal --stack-yaml ./stack.yaml install dockwright
     - stage: exec dockwright
-      # if: branch = master
+      if: branch = master
       script: git clone -b ${TRAVIS_BRANCH} "https://${GH_TOKEN}@github.com/${TRAVIS_REPO_SLUG}.git" temp
       after_success:
         - cd temp
@@ -29,5 +29,5 @@ jobs:
         - git diff --quiet && git diff --staged --quiet || git commit -am "[skip ci] Update Dockerfile"
         - git tag $(stack exec -- dockwright --echo=ELCHEMY_VERSION)
         - git tag
-        # - git push origin master
-        # - git push origin --tags
+        - git push origin master
+        - git push origin --tags

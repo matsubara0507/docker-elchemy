@@ -20,14 +20,14 @@ jobs:
       script: git clone -b master "https://${GH_TOKEN}@github.com/${TRAVIS_REPO_SLUG}.git" temp
       after_success:
         - cd temp
-        - stack exec -- dockwrite --version
-        - stack exec -- dockwrite .dockwright.yaml
+        - stack exec -- dockwright --version
+        - stack exec -- dockwright .dockwright.yaml
         - git config user.name "${GIT_NAME}"
         - git config user.email "${GIT_EMAIL}"
         - git status
         - git add -A
         - git diff --quiet && git diff --staged --quiet || git commit -am "[skip ci] Update Dockerfile"
-        - stack exec -- dockwrite --echo=ELCHEMY_VERSION | git tag
+        - stack exec -- dockwright --echo=ELCHEMY_VERSION | git tag
         - git tag
         # - git push origin master
         # - git push origin --tags

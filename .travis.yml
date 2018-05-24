@@ -1,4 +1,6 @@
-sudo: false
+sudo: required
+services:
+  - docker
 language: generic
 cache:
   timeout: 360
@@ -27,6 +29,7 @@ jobs:
         - git status
         - git add -A
         - git diff --quiet && git diff --staged --quiet || git commit -am "[skip ci] Update Dockerfile"
+        - docker build .
         - git tag $(stack exec -- dockwright --echo=ELCHEMY_VERSION)
         - git tag
         - git push origin master

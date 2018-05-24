@@ -11,4 +11,6 @@ RUN npm i -g elm@${ELM_VERSION} --unsafe-perm=true --allow-root
 RUN npm i -g elm-github-install@${ELM_GITHUB_INSTALL_VERSION} --unsafe-perm=true --allow-root
 RUN npm i -g elchemy@${ELCHEMY_VERSION}
 
+RUN yes | elchemy new temp && rm -frd temp  
+
 CMD "bin/bash"
